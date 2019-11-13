@@ -1,0 +1,13 @@
+namespaces:
+- author:
+  - Jessie R. Liu
+  contact:
+  - jrliu95@gmail.com
+  doc: stores stimulation current waveforms
+  name: ndx-current-stim
+  schema:
+  - namespace: core
+    neurodata_types:
+    - ElectricalSeries
+  - source: ndx-current-stim.extensions.yaml
+  version: 0.1.0
