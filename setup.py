@@ -8,7 +8,8 @@ from shutil import copy2
 setup_args = {
     'name': 'ndx-current-stim',
     'version': '0.1.0',
-    'description': 'stores stimulation current waveforms',
+    'description': 'An NWB extension for storing waveforms associated with '
+                   'neural stimulation using ECoG.',
     'author': 'Jessie R. Liu',
     'author_email': 'jrliu95@gmail.com',
     'url': '',
