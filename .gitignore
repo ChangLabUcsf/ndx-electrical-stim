@@ -1,3 +1,6 @@
+# PyCharm
+.idea/*
+
 # generated docs
 docs/_build
 docs/source/_format_auto_docs
