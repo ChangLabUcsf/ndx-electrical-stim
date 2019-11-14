@@ -8,6 +8,9 @@ namespaces:
   schema:
   - namespace: core
     neurodata_types:
-    - ElectricalSeries
+    - TimeSeries
+  - namespace: hdmf-common
+    neurodata_types:
+    - DynamicTableRegion
   - source: ndx-current-stim.extensions.yaml
   version: 0.1.0

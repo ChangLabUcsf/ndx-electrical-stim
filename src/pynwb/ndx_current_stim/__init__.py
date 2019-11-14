@@ -20,3 +20,5 @@ if not os.path.exists(ndx_current_stim_specpath):
 
 # Load the namespace
 load_namespaces(ndx_current_stim_specpath)
+
+from .ndx_current_stim import StimSeries
