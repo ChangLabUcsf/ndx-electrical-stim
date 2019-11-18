@@ -13,7 +13,7 @@ def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
         doc='stores stimulation current waveforms',
-        name='ndx-current-stim',
+        name='ndx-electrical-stim',
         version='0.1.0',
         author=list(map(str.strip, 'Jessie R. Liu'.split(','))),
         contact=list(map(str.strip, 'jrliu95@gmail.com'.split(',')))
