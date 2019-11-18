@@ -1,1 +1,1 @@
-# ndx-current-stim Extension for NWB:N
+# ndx-electrical-stim Extension for NWB:N
