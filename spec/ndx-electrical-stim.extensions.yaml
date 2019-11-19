@@ -1,0 +1,10 @@
+groups:
+- neurodata_type_def: StimSeries
+  neurodata_type_inc: TimeSeries
+  doc: An extension of TimeSeries to include stimulation waveforms used during electrical
+    stimulation.
+  datasets:
+  - name: electrodes
+    neurodata_type_inc: DynamicTableRegion
+    doc: DynamicTableRegion pointer to the bipolar electrode pairs corresponding to
+      the stimulation waveforms.

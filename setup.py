@@ -19,9 +19,9 @@ setup_args = {
     ],
     'packages': find_packages('src/pynwb'),
     'package_dir': {'': 'src/pynwb'},
-    'package_data': {'ndx_current_stim': [
-        'spec/ndx-current-stim.namespace.yaml',
-        'spec/ndx-current-stim.extensions.yaml',
+    'package_data': {'ndx_electrical_stim': [
+        'spec/ndx-electrical-stim.namespace.yaml',
+        'spec/ndx-electrical-stim.extensions.yaml',
     ]},
     'classifiers': [
         "Intended Audience :: Developers",
@@ -32,10 +32,11 @@ setup_args = {
 
 
 def _copy_spec_files(project_dir):
-    ns_path = os.path.join(project_dir, 'spec', 'ndx-current-stim.namespace.yaml')
-    ext_path = os.path.join(project_dir, 'spec', 'ndx-current-stim.extensions.yaml')
+    ns_path = os.path.join(project_dir, 'spec', 'ndx-electrical-stim.namespace.yaml')
+    ext_path = os.path.join(project_dir, 'spec', 'ndx-electrical-stim.extensions.yaml')
 
-    dst_dir = os.path.join(project_dir, 'src', 'pynwb', 'ndx_current_stim', 'spec')
+    dst_dir = os.path.join(project_dir, 'src', 'pynwb', 'ndx_electrical_stim',
+                           'spec')
     if not os.path.exists(dst_dir):
         os.mkdir(dst_dir)
 

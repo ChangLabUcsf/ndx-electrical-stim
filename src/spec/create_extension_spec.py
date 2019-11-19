@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
+# Standard libraries
 import os.path
 
+# Third party libraries
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec
 
 
@@ -12,7 +13,7 @@ from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
-        doc='stores stimulation current waveforms',
+        doc='stores electrical stimulation waveforms',
         name='ndx-electrical-stim',
         version='0.1.0',
         author=list(map(str.strip, 'Jessie R. Liu'.split(','))),
@@ -33,12 +34,13 @@ def main():
         neurodata_type_def='StimSeries',
         neurodata_type_inc='TimeSeries',
         doc=('An extension of TimeSeries to include stimulation waveforms '
-             'used during electrode stimulation.'),
+             'used during electrical stimulation.'),
     )
     stim_series.add_dataset(name='electrodes',
                             neurodata_type_inc='DynamicTableRegion',
                             doc='DynamicTableRegion pointer to the '
-                                'electrodes corresponding to the stimulation waveforms.')
+                                'bipolar electrode pairs corresponding to the '
+                                'stimulation waveforms.')
 
     # TODO: add all of your new data types to this list
     new_data_types = [stim_series]

@@ -3,8 +3,8 @@ namespaces:
   - Jessie R. Liu
   contact:
   - jrliu95@gmail.com
-  doc: stores stimulation current waveforms
-  name: ndx-current-stim
+  doc: stores electrical stimulation waveforms
+  name: ndx-electrical-stim
   schema:
   - namespace: core
     neurodata_types:
@@ -12,5 +12,5 @@ namespaces:
   - namespace: hdmf-common
     neurodata_types:
     - DynamicTableRegion
-  - source: ndx-current-stim.extensions.yaml
+  - source: ndx-electrical-stim.extensions.yaml
   version: 0.1.0
