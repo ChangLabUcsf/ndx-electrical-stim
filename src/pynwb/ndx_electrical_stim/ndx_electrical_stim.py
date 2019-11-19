@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Define ndx_current_stim (StimSeries class) for the PyNWB API.
+Define ndx_electrical_stim (StimSeries class) for the PyNWB API.
 """
 # Third party libraries
 from hdmf.common import DynamicTableRegion
@@ -8,7 +8,7 @@ from hdmf.utils import docval, popargs, get_docval
 from pynwb import TimeSeries, register_class
 
 
-@register_class('StimSeries', 'ndx-current-stim')
+@register_class('StimSeries', 'ndx-electrical-stim')
 class StimSeries(TimeSeries):
     __nwbfields__ = (
         {

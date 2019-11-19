@@ -4,7 +4,7 @@ import os
 import unittest
 import numpy as np
 from pynwb import NWBFile, NWBHDF5IO
-from ndx_current_stim import StimSeries
+from ndx_electrical_stim import StimSeries
 
 class StimSeriesTest(unittest.TestCase):
     def setUp(self):

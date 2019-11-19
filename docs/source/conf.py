@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# ndx-current-stim documentation build configuration file, created by
+# ndx-electrical-stim documentation build configuration file, created by
 # sphinx-quickstart on Wed Nov 13 12:26:11 2019.
 #
 # This file is execfile()d with the current directory set to its
@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'ndx-current-stim'
+project = 'ndx-electrical-stim'
 copyright = '2019, Jessie R. Liu'
 author = 'Jessie R. Liu'
 
@@ -114,7 +114,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ndx-current-stimdoc'
+htmlhelp_basename = 'ndx-electrical-stimdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -141,7 +141,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ndx-current-stim.tex', 'ndx-current-stim Documentation',
+    (master_doc, 'ndx-electrical-stim.tex', 'ndx-electrical-stim '
+                                            'Documentation',
      'Jessie R. Liu', 'manual'),
 ]
 
@@ -151,7 +152,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'ndx-current-stim', 'ndx-current-stim Documentation',
+    (master_doc, 'ndx-electrical-stim', 'ndx-electrical-stim Documentation',
      [author], 1)
 ]
 
@@ -162,8 +163,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'ndx-current-stim', 'ndx-current-stim Documentation',
-     author, 'ndx-current-stim', 'One line description of project.',
+    (master_doc, 'ndx-electrical-stim', 'ndx-electrical-stim Documentation',
+     author, 'ndx-electrical-stim', 'One line description of project.',
      'Miscellaneous'),
 ]
 

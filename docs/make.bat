@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=build
-set SPHINXPROJ=ndx-current-stim
+set SPHINXPROJ=ndx-electrical-stim
 
 if "%1" == "" goto help
 

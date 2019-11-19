@@ -1,8 +1,8 @@
 
-.. _ndx-current-stim:
+.. _ndx-electrical-stim:
 
 ****************
-ndx-current-stim
+ndx-electrical-stim
 ****************
 
 Version |release| |today|

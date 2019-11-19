@@ -8,7 +8,7 @@ docs/source/_static
 !docs/source/_static/theme_overrides.css
 
 # copied spec files
-src/pynwb/ndx_current_stim/spec/*.yaml
+src/pynwb/ndx_electrical_stim/spec/*.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

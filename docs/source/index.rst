@@ -1,4 +1,4 @@
-Specification for the ndx-current-stim extension
+Specification for the ndx-electrical-stim extension
 ==================================
 
 .. toctree::
