@@ -46,7 +46,7 @@ def main():
     stim_series.add_dataset(name='metadata',
                             doc='JSON serialized metadata for creating the '
                                 'recorded stimulation waveform.',
-                            dtype='bytes')
+                            dtype='text')
 
     # TODO: add all of your new data types to this list
     new_data_types = [stim_series]

@@ -1,5 +1,5 @@
 import os
-from pynwb import load_namespaces
+from pynwb import load_namespaces, get_class
 
 # Set path of the namespace.yaml file to the expected install location
 ndx_electrical_stim_specpath = os.path.join(
@@ -21,4 +21,5 @@ if not os.path.exists(ndx_electrical_stim_specpath):
 # Load the namespace
 load_namespaces(ndx_electrical_stim_specpath)
 
-from .ndx_electrical_stim import StimSeries
+# Load the class
+StimSeries = get_class('StimSeries', 'ndx-electrical-stim')

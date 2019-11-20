@@ -3,6 +3,7 @@
 Define ndx_electrical_stim (StimSeries class) for the PyNWB API.
 """
 # Standard libraries
+import json
 
 # Third party libraries
 from hdmf.common import DynamicTableRegion
@@ -36,13 +37,17 @@ class StimSeries(TimeSeries):
                 'type': ('array_data', 'data', TimeSeries),
                 'shape': ((None,), (None, None)),
                 'doc': 'The data this TimeSeries dataset stores. Can also '
-                       'store binary data e.g. image frames'
+                       'store binary data e.g. image frames. Data should be '
+                       'of shape (n_time,) for a single electrode pair or of '
+                       '(n_time, n_electrodes).',
+                'default': None
             },
             {
                 'name': 'electrodes',
                 'type': DynamicTableRegion,
                 'doc': 'the table region pointing to the bipolar electrode '
-                       'pairs corresponding to the stimulation waveform.'
+                       'pairs corresponding to the stimulation waveform.',
+                'default': None
             },
             {
                 'name': 'unit',
@@ -52,7 +57,7 @@ class StimSeries(TimeSeries):
             },
             {
                 'name': 'metadata',
-                'type': 'bytes',
+                'type': str,
                 'doc': 'JSON serialized metadata for creating the recorded '
                        'stimulation waveform',
                 'default': None
@@ -71,24 +76,30 @@ class StimSeries(TimeSeries):
 
         # For each period of stimulation, confirm that the required
         # parameters of amplitude, pulsewidth, and frequency are defined.
-        # for stim_run in metadata.keys():
-        #
-        #     if 'amplitude' not in metadata[stim_run].keys():
-        #         raise ValueError('Must define stimulation amplitude for {'
-        #                          '}.'.format(stim_run))
-        #
-        #     if 'pulse_width' not in metadata[stim_run].keys():
-        #         raise ValueError('Must define stimulation pulse_width for {'
-        #                          '}.'.format(stim_run))
-        #
-        #     if 'frequency' not in metadata[stim_run].keys():
-        #         raise ValueError('Must define stimulation frequency for {'
-        #                          '}.'.format(stim_run))
+        metadata_json = json.loads(metadata)
+        for stim_run in metadata_json.keys():
 
-        # TODO: ensure that the size of the electrode region corresponds to
-        #  number of waveforms?
+            if 'amplitude' not in metadata_json[stim_run].keys():
+                raise ValueError('Must define stimulation amplitude for {'
+                                 '} metadata.'.format(stim_run))
+
+            if 'pulse_width' not in metadata_json[stim_run].keys():
+                raise ValueError('Must define stimulation pulse_width for {'
+                                 '} metadata.'.format(stim_run))
+
+            if 'frequency' not in metadata_json[stim_run].keys():
+                raise ValueError('Must define stimulation frequency for {'
+                                 '} metadata.'.format(stim_run))
+
+        # Ensure that the size of the electrode region corresponds to
+        #  number of waveforms.
+        if data is not None:
+            if data.shape[-1] != len(electrodes):
+                raise ValueError('Data passed contains {} waveforms but '
+                                 '{} corresponding electrode pairs '
+                                 'specified'.format(data.shape[-1],
+                                                    len(electrodes)))
 
         super(StimSeries, self).__init__(name, data, unit, **kwargs)
         self.electrodes = electrodes
-        # self.metadata = metadata
-
+        self.metadata = metadata

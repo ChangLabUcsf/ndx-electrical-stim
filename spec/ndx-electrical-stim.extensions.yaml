@@ -9,5 +9,5 @@ groups:
     doc: DynamicTableRegion pointer to the bipolar electrode pairs corresponding to
       the stimulation waveforms.
   - name: metadata
-    dtype: bytes
+    dtype: text
     doc: JSON serialized metadata for creating the recorded stimulation waveform.
