@@ -3,7 +3,8 @@
 import os.path
 
 # Third party libraries
-from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec
+from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, \
+    NWBAttributeSpec, NWBDatasetSpec
 
 
 # TODO: import the following spec classes as needed
@@ -30,6 +31,7 @@ def main():
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/latest/extensions.html#extending-nwb
     # for more information
+
     stim_series = NWBGroupSpec(
         neurodata_type_def='StimSeries',
         neurodata_type_inc='TimeSeries',
@@ -41,6 +43,10 @@ def main():
                             doc='DynamicTableRegion pointer to the '
                                 'bipolar electrode pairs corresponding to the '
                                 'stimulation waveforms.')
+    stim_series.add_dataset(name='metadata',
+                            doc='JSON serialized metadata for creating the '
+                                'recorded stimulation waveform.',
+                            dtype='bytes')
 
     # TODO: add all of your new data types to this list
     new_data_types = [stim_series]

@@ -8,3 +8,6 @@ groups:
     neurodata_type_inc: DynamicTableRegion
     doc: DynamicTableRegion pointer to the bipolar electrode pairs corresponding to
       the stimulation waveforms.
+  - name: metadata
+    dtype: bytes
+    doc: JSON serialized metadata for creating the recorded stimulation waveform.
