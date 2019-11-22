@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+Initialize the StimSeries class with incorporated variable checks.
+"""
+# Standard libraries
 import json
 import os
 
-from pynwb import load_namespaces, get_class
+# Third party libraries
 from hdmf.utils import popargs
+from pynwb import load_namespaces, get_class
 
 # Set path of the namespace.yaml file to the expected install location
 ndx_electrical_stim_specpath = os.path.join(
@@ -27,6 +33,7 @@ load_namespaces(ndx_electrical_stim_specpath)
 # Load the class
 baseStimSeries = get_class('StimSeries', 'ndx-electrical-stim')
 
+
 # Use the base class to define a new __init__ with variable checks.
 class StimSeries(baseStimSeries):
 
@@ -35,7 +42,8 @@ class StimSeries(baseStimSeries):
             'electrodes', 'data', 'unit', 'metadata', kwargs)
 
         if unit not in ['amp', 'volt']:
-            raise ValueError('Stimulation waveform unit must be "amp" or "volt".')
+            raise ValueError(
+                'Stimulation waveform unit must be "amp" or "volt".')
 
         # For each period of stimulation, confirm that the required
         # parameters of amplitude, pulsewidth, and frequency are defined.
