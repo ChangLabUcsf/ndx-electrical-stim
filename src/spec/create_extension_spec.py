@@ -3,8 +3,7 @@
 import os.path
 
 # Third party libraries
-from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, \
-    NWBAttributeSpec, NWBDatasetSpec
+from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec
 
 
 # TODO: import the following spec classes as needed
@@ -43,10 +42,9 @@ def main():
                             doc='DynamicTableRegion pointer to the '
                                 'bipolar electrode pairs corresponding to the '
                                 'stimulation waveforms.')
-    stim_series.add_dataset(name='metadata',
-                            doc='JSON serialized metadata for creating the '
-                                'recorded stimulation waveform.',
-                            dtype='text')
+    stim_series.add_dataset(name='parameters',
+                            neurodata_type_inc='DynamicTable',
+                            doc='Parameters corresponding to the stimulation waveforms.')
 
     # TODO: add all of your new data types to this list
     new_data_types = [stim_series]
