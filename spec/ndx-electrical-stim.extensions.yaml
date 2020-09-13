@@ -4,10 +4,19 @@ groups:
   doc: An extension of TimeSeries to include stimulation waveforms used during electrical
     stimulation.
   datasets:
-  - name: electrodes
+  - name: bipolar_electrodes
     neurodata_type_inc: DynamicTableRegion
     doc: DynamicTableRegion pointer to the bipolar electrode pairs corresponding to
       the stimulation waveforms.
-  - name: metadata
-    dtype: text
-    doc: JSON serialized metadata for creating the recorded stimulation waveform.
+- neurodata_type_def: StimTable
+  neurodata_type_inc: TimeIntervals
+  doc: An extension of TimeIntervals to hold parameters used for various stimulation
+    events.
+  datasets:
+  - name: bipolar_pair
+    neurodata_type_inc: DynamicTableRegion
+    doc: DynamicTableRegion pointer to the bipolar electrode pair used for this stimulation
+      event.
+  - name: bipolar_table
+    neurodata_type_inc: DynamicTable
+    doc: BipolarSchemeTable that the bipolar_pair regions reference.
