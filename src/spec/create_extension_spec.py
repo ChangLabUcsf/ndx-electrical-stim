@@ -25,6 +25,7 @@ def main():
     # this is similar to specifying the Python modules that need to be imported
     # to use your new data types
     ns_builder.include_type('TimeSeries', namespace='core')
+    ns_builder.include_type('TimeIntervals', namespace='core')
     ns_builder.include_type('DynamicTableRegion', namespace='hdmf-common')
 
     # TODO: define your new data types
@@ -37,17 +38,30 @@ def main():
         doc=('An extension of TimeSeries to include stimulation waveforms '
              'used during electrical stimulation.'),
     )
-    stim_series.add_dataset(name='electrodes',
+    stim_series.add_dataset(name='bipolar_electrodes',
                             neurodata_type_inc='DynamicTableRegion',
                             doc='DynamicTableRegion pointer to the '
                                 'bipolar electrode pairs corresponding to the '
                                 'stimulation waveforms.')
-    stim_series.add_dataset(name='parameters',
-                            neurodata_type_inc='DynamicTable',
-                            doc='Parameters corresponding to the stimulation waveforms.')
+
+    stim_table = NWBGroupSpec(
+        neurodata_type_def='StimTable',
+        neurodata_type_inc='TimeIntervals',
+        doc=('An extension of TimeIntervals to hold parameters used for '
+             'various stimulation events.'),
+    )
+    stim_table.add_dataset(name='bipolar_pair',
+                           neurodata_type_inc='DynamicTableRegion',
+                           doc='DynamicTableRegion pointer to the '
+                               'bipolar electrode pair used for this '
+                               'stimulation event.')
+    stim_table.add_dataset(name='bipolar_table',
+                           neurodata_type_inc='DynamicTable',
+                           doc='BipolarSchemeTable that the bipolar_pair '
+                               'regions reference.')
 
     # TODO: add all of your new data types to this list
-    new_data_types = [stim_series]
+    new_data_types = [stim_series, stim_table]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(
