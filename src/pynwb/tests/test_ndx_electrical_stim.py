@@ -1,56 +1,67 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
-import os
-import unittest
+
 import numpy as np
 from pynwb import NWBFile, NWBHDF5IO
 from ndx_electrical_stim import StimSeries
 
-class StimSeriesTest(unittest.TestCase):
-    def setUp(self):
-        self.nwbfile = NWBFile('description', 'id', datetime.now().astimezone())
-        device = self.nwbfile.create_device('device_test')
-        group = self.nwbfile.create_electrode_group(
-                name='electrodes',
-                description='label',
-                device=device,
-                location='brain')
+from ndx_bipolar_scheme import BipolarSchemeTable, EcephysExt
+from ndx_electrical_stim import StimTable
 
-        for _ in range(3):
-            self.nwbfile.add_electrode(x=np.nan, y=np.nan, z=np.nan, imp=np.nan,
-                                       location='', filtering='', group=group)
 
-        # Make a 300 timepoint waveform time series for 2 electrodes (one
-        # cathode, and one anode).
-        self.current_data = np.random.randn((300, 2))
+def test_io():
+    nwbfile = NWBFile('description', 'id', datetime.now().astimezone())
+    device = nwbfile.create_device('device_test')
+    group = nwbfile.create_electrode_group(
+        name='electrodes',
+        description='label',
+        device=device,
+        location='brain')
 
-    def test_init_stim_series(self):
-        pass
+    for i in range(4):
+        nwbfile.add_electrode(x=float(i), y=float(i), z=float(i), imp=np.nan,
+                              location='', filtering='', group=group)
 
-    # Copied from ndx-ecog
-    # def test_init_ecog_subject(self):
-    #     cortical_surfaces = CorticalSurfaces()
-    #     cortical_surfaces.create_surface('test', vertices=self.vertices, faces=self.faces)
-    #     self.nwbfile.subject = ECoGSubject(subject_id='id', cortical_surfaces=cortical_surfaces)
-    #     np.testing.assert_allclose(self.nwbfile.subject.cortical_surfaces.surfaces['test'].vertices, self.vertices)
-    #     np.testing.assert_allclose(self.nwbfile.subject.cortical_surfaces.surfaces['test'].faces, self.faces)
-    # def test_add_cs_to_ecog_subject(self):
-    #     cortical_surfaces = CorticalSurfaces()
-    #     cortical_surfaces.create_surface('test', vertices=self.vertices, faces=self.faces)
-    #     self.nwbfile.subject = ECoGSubject()
-    #     self.nwbfile.subject.cortical_surfaces = cortical_surfaces
-    # def test_io(self):
-    #     cortical_surfaces = CorticalSurfaces()
-    #     cortical_surfaces.create_surface('test', vertices=self.vertices, faces=self.faces)
-    #     self.nwbfile.subject = ECoGSubject(subject_id='id', cortical_surfaces=cortical_surfaces)
-    #     with NWBHDF5IO('test.nwb', 'w') as io:
-    #         io.write(self.nwbfile)
-    #     with NWBHDF5IO('test.nwb', 'r') as io:
-    #         nwbfile = io.read()
-    #         np.testing.assert_allclose(
-    #             self.nwbfile.subject.cortical_surfaces.surfaces['test'].vertices,
-    #             nwbfile.subject.cortical_surfaces.surfaces['test'].vertices)
-    #         np.testing.assert_allclose(
-    #             self.nwbfile.subject.cortical_surfaces.surfaces['test'].faces,
-    #             nwbfile.subject.cortical_surfaces.surfaces['test'].faces)
-    #     os.remove('test.nwb')
+    bipolar_scheme_table = BipolarSchemeTable(name='bipolar_scheme_table',
+                                              description='desc')
+
+    bipolar_scheme_table.anodes.table = nwbfile.electrodes
+    bipolar_scheme_table.cathodes.table = nwbfile.electrodes
+
+    bipolar_scheme_table.add_row(anodes=[0], cathodes=[1])
+    bipolar_scheme_table.add_row(anodes=[0, 1], cathodes=[2, 3])
+
+    ecephys_ext = EcephysExt(name='ecephys_ext')
+    ecephys_ext.bipolar_scheme_table = bipolar_scheme_table
+    nwbfile.add_lab_meta_data(ecephys_ext)
+
+    st = StimTable(
+        name='stimtable',
+        description='stimulation parameters',
+        # bipolar_table=bipolar_scheme_table
+    )
+
+    # calling this before `add_run` obviates bipolar_table=bipolar_scheme_table above.
+    # You can add it to the NWBFile later, but you'll need to specify bipolar_table manually
+
+    nwbfile.add_time_intervals(st)
+
+    frequencies = [10., 10.]
+    amplitudes = [5., 5.]
+    pulse_widths = [2., 3.]
+
+    for i in range(2):
+        st.add_run(
+            start_time=np.nan,
+            stop_time=np.nan,
+            frequency=frequencies[i],
+            amplitude=amplitudes[i],
+            pulse_width=pulse_widths[i],
+            bipolar_pair=i
+        )
+
+    with NWBHDF5IO('test_file.nwb', 'w') as io:
+        io.write(nwbfile)
+
+    # Make a 300 timepoint waveform time series for 2 electrodes (one
+    # cathode, and one anode).
+    current_data = np.random.randn(300, 2)
