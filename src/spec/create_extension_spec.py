@@ -27,6 +27,7 @@ def main():
     ns_builder.include_type('TimeSeries', namespace='core')
     ns_builder.include_type('TimeIntervals', namespace='core')
     ns_builder.include_type('DynamicTableRegion', namespace='hdmf-common')
+    ns_builder.include_type('VectorData', namespace='hdmf-common')
 
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/latest/extensions.html#extending-nwb
@@ -55,12 +56,16 @@ def main():
                            doc='DynamicTableRegion pointer to the '
                                'bipolar electrode pair used for this '
                                'stimulation event.')
-    stim_table.add_dataset(name='bipolar_table',
-                           neurodata_type_inc='DynamicTable',
-                           doc='BipolarSchemeTable that the bipolar_pair '
-                               'regions reference.')
+    stim_table.add_dataset(name='frequency',
+                           neurodata_type_inc='VectorData',
+                           doc='Frequency of stimulation waveform, in Hz.')
+    stim_table.add_dataset(name='amplitude',
+                           neurodata_type_inc='VectorData',
+                           doc='Amplitude of stimulation waveform, in Amps.')
+    stim_table.add_dataset(name='pulse_width',
+                           neurodata_type_inc='VectorData',
+                           doc='Pulse width of stimulation waveform, in meters')
 
-    # TODO: add all of your new data types to this list
     new_data_types = [stim_series, stim_table]
 
     # export the spec to yaml files in the spec folder

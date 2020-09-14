@@ -17,6 +17,12 @@ groups:
     neurodata_type_inc: DynamicTableRegion
     doc: DynamicTableRegion pointer to the bipolar electrode pair used for this stimulation
       event.
-  - name: bipolar_table
-    neurodata_type_inc: DynamicTable
-    doc: BipolarSchemeTable that the bipolar_pair regions reference.
+  - name: frequency
+    neurodata_type_inc: VectorData
+    doc: Frequency of stimulation waveform, in Hz.
+  - name: amplitude
+    neurodata_type_inc: VectorData
+    doc: Amplitude of stimulation waveform, in Amps.
+  - name: pulse_width
+    neurodata_type_inc: VectorData
+    doc: Pulse width of stimulation waveform, in meters

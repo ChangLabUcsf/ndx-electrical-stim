@@ -13,5 +13,6 @@ namespaces:
   - namespace: hdmf-common
     neurodata_types:
     - DynamicTableRegion
+    - VectorData
   - source: ndx-electrical-stim.extensions.yaml
   version: 0.1.0

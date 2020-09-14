@@ -2,12 +2,14 @@
 """
 Define StimSeries & StimTable classes for the PyNWB API.
 """
-# import warnings
+import warnings
 
-from hdmf.common import DynamicTableRegion, DynamicTable
+from hdmf.common import DynamicTableRegion
+from hdmf.common.io.table import DynamicTableMap
 from hdmf.utils import popargs, get_docval, docval
-
+from ndx_bipolar_scheme import BipolarSchemeTable
 from pynwb import TimeSeries, register_class
+from pynwb import register_map
 from pynwb.epoch import TimeIntervals
 
 
@@ -17,14 +19,6 @@ class StimTable(TimeIntervals):
     Parameters corresponding to events of stimulation with indicated bipolar
     pairs of electrodes.
     """
-    __nwbfields__ = (
-        {
-            'name': 'bipolar_table',
-            'doc': 'BipolarSchemeTable that the bipolar_pair regions '
-                   'reference.',
-            'child': True
-        }
-    )
 
     # TODO: optional time_series ObjectReference to the StimSeries
     __columns__ = (
@@ -57,10 +51,8 @@ class StimTable(TimeIntervals):
             'name': 'bipolar_pair',
             'description': 'The bipolar pair of electrodes used for this '
                            'stimulation run.',
-            'required': True#,
-            # TODO: does table need to be true actually? since it's just a
-            #  region
-            # 'table': True
+            'required': True,
+            'table': True
         }
     )
 
@@ -78,8 +70,8 @@ class StimTable(TimeIntervals):
             'default': 'stimulation parameters'
         },
         {
-            'name': 'bipolar_electrode_table',
-            'type': DynamicTable,
+            'name': 'bipolar_table',
+            'type': BipolarSchemeTable,
             'doc': 'The table of bipolar electrode pairs that the '
                    '*bipolar_pair* column indexes',
             'default': None
@@ -87,46 +79,35 @@ class StimTable(TimeIntervals):
         *get_docval(TimeIntervals.__init__, 'id', 'columns', 'colnames')
     )
     def __init__(self, **kwargs):
-        bipolar_electrode_table = popargs('bipolar_electrode_table', kwargs)
+        bipolar_table = popargs('bipolar_table', kwargs)
         super(StimTable, self).__init__(**kwargs)
-        self.__electrode_table = bipolar_electrode_table
+        self.__bipolar_table = bipolar_table
 
     @docval(
         {
             'name': 'start_time',
             'type': float,
             'doc': 'the start time of the stimulation run',
-            'default': None
         },
         {
             'name': 'stop_time',
             'type': float,
             'doc': 'the stop time of the stimulation run',
-            'default': None
         },
         {
             'name': 'frequency',
             'type': float,
             'doc': 'the frequency of the stimulation waveform',
-            'default': None
         },
         {
             'name': 'amplitude',
             'type': float,
             'doc': 'the amplitude of the stimulation waveform',
-            'default': None
         },
         {
             'name': 'pulse_width',
             'type': float,
             'doc': 'the pulse width of the stimulation waveform',
-            'default': None
-        },
-        {
-            'name': 'bipolar_pair',
-            'type': 'DynamicTableRegion',
-            'doc': 'the bipolar pair of electrodes used',
-            'default': None
         },
         allow_extra=True
     )
@@ -135,19 +116,17 @@ class StimTable(TimeIntervals):
         Add a stimulation parameters for a specific run.
         """
         super(StimTable, self).add_interval(**kwargs)
-        # if 'bipolar_pair' in self:
-        #     elec_col = self['bipolar_pair'].target
-        #     if elec_col.table is None:
-        #         if self.__electrode_table is None:
-        #             nwbfile = self.get_ancestor(data_type='NWBFile')
-        #             try:
-        #                 elec_col.table = nwbfile.lab_meta_data[
-        #                     'ecephys_ext'].bipolar_scheme_table
-        #             except KeyError:
-        #                 warnings.warn('Reference to BipolarSchemeTable that '
-        #                               'does not yet exist.')
-        #         else:
-        #             elec_col.table = self.__electrode_table
+        bipolar_col = self['bipolar_pair']
+        if bipolar_col.table is None:
+            if self.__bipolar_table is None:
+                nwbfile = self.get_ancestor(data_type='NWBFile')
+                try:
+                    bipolar_col.table = nwbfile.lab_meta_data['ecephys_ext'].bipolar_scheme_table
+                except KeyError:
+                    warnings.warn('Reference to BipolarSchemeTable that '
+                                  'does not yet exist.')
+            else:
+                bipolar_col.table = self.__bipolar_table
 
 
 @register_class('StimSeries', 'ndx-electrical-stim')
@@ -194,3 +173,19 @@ class StimSeries(TimeSeries):
 
         super(StimSeries, self).__init__(name, data, 'amperes', **kwargs)
         self.bipolar_electrodes = bipolar_electrodes
+
+
+## IO
+
+
+@register_map(StimTable)
+class StimTableMap(DynamicTableMap):
+    @DynamicTableMap.object_attr("bipolar_pair")
+    def bipolar_column(self, container, manager):
+        ret = container.get('bipolar_pair')
+        if ret is None:
+            return ret
+        # set the electrode table if it hasn't been set yet
+        if getattr(ret, 'table', None) is None:
+            ret.table = container.get_ancestor('NWBFile').lab_meta_data['ecephys_ext'].bipolar_scheme_table
+        return ret
