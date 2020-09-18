@@ -140,6 +140,7 @@ class StimSeries(TimeSeries):
     __nwbfields__ = (
         {
             'name': 'bipolar_electrodes',
+            'required_name': 'bipolar_electrodes',
             'doc': 'DynamicTableRegion pointer to the '
                    'bipolar electrode pairs corresponding to the '
                    'stimulation waveforms.',
