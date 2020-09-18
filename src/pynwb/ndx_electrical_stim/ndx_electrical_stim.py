@@ -81,7 +81,7 @@ class StimTable(TimeIntervals):
     def __init__(self, **kwargs):
         bipolar_table = popargs('bipolar_table', kwargs)
         super(StimTable, self).__init__(**kwargs)
-        self.__bipolar_table = bipolar_table
+        self.bipolar_table = bipolar_table
 
     @docval(
         {
@@ -118,7 +118,7 @@ class StimTable(TimeIntervals):
         super(StimTable, self).add_interval(**kwargs)
         bipolar_col = self['bipolar_pair']
         if bipolar_col.table is None:
-            if self.__bipolar_table is None:
+            if self.bipolar_table is None:
                 nwbfile = self.get_ancestor(data_type='NWBFile')
                 try:
                     bipolar_col.table = nwbfile.lab_meta_data['ecephys_ext'].bipolar_scheme_table
@@ -126,7 +126,7 @@ class StimTable(TimeIntervals):
                     warnings.warn('Reference to BipolarSchemeTable that '
                                   'does not yet exist.')
             else:
-                bipolar_col.table = self.__bipolar_table
+                bipolar_col.table = self.bipolar_table
 
 
 @register_class('StimSeries', 'ndx-electrical-stim')
