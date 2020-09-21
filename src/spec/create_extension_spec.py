@@ -64,7 +64,8 @@ def main():
                            doc='Amplitude of stimulation waveform, in Amps.')
     stim_table.add_dataset(name='pulse_width',
                            neurodata_type_inc='VectorData',
-                           doc='Pulse width of stimulation waveform, in meters')
+                           doc='Pulse width of stimulation waveform, '
+                               'in seconds/phase')
 
     new_data_types = [stim_series, stim_table]
 

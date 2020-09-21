@@ -44,7 +44,8 @@ class StimTable(TimeIntervals):
         },
         {
             'name': 'pulse_width',
-            'description': 'Pulse width of stimulation waveform, in meters',
+            'description': 'Pulse width of stimulation waveform, '
+                           'in seconds/phase',
             'required': True
         },
         {
