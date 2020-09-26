@@ -9,8 +9,10 @@ namespaces:
   - namespace: core
     neurodata_types:
     - TimeSeries
+    - TimeIntervals
   - namespace: hdmf-common
     neurodata_types:
     - DynamicTableRegion
+    - VectorData
   - source: ndx-electrical-stim.extensions.yaml
   version: 0.1.0
